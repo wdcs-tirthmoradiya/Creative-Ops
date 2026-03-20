@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import "./App.css";
 
 const STAGES = ["Idea","Brief","Brief Review","Ad Production","Ad Revision","Pending Upload","Testing","Winner","Loser"];
 const STAGE_ROLES = { "Idea":"Strategist","Brief":"Strategist","Brief Review":"Founder","Ad Production":"Editor","Ad Revision":"Editor","Pending Upload":"VA","Testing":"Manager","Winner":"Manager","Loser":"Manager" };
@@ -130,33 +131,6 @@ export default function App() {
 
   return (
     <div style={{ fontFamily:"'DM Sans',system-ui,sans-serif", background:"#0a0a0f", minHeight:"100vh", color:"#e2e8f0" }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
-        * { box-sizing:border-box; margin:0; padding:0; }
-        ::-webkit-scrollbar { width:4px; height:4px; }
-        ::-webkit-scrollbar-track { background:transparent; }
-        ::-webkit-scrollbar-thumb { background:#2d2d3d; border-radius:4px; }
-        input, select, textarea { background:#13131f; border:1px solid #2d2d3d; color:#e2e8f0; border-radius:8px; padding:8px 12px; font-family:inherit; font-size:14px; outline:none; width:100%; }
-        input:focus, select:focus, textarea:focus { border-color:#7c3aed; }
-        button { cursor:pointer; font-family:inherit; }
-        .card { background:#13131f; border:1px solid #1e1e2e; border-radius:12px; }
-        .pill { display:inline-flex; align-items:center; padding:2px 10px; border-radius:999px; font-size:11px; font-weight:500; }
-        .nav-btn { background:none; border:none; color:#94a3b8; padding:8px 16px; border-radius:8px; font-size:14px; font-weight:500; transition:all 0.15s; }
-        .nav-btn:hover { background:#1e1e2e; color:#e2e8f0; }
-        .nav-btn.active { background:#7c3aed22; color:#a78bfa; border:1px solid #7c3aed44; }
-        .btn-primary { background:#7c3aed; color:#fff; border:none; padding:8px 18px; border-radius:8px; font-size:14px; font-weight:500; transition:all 0.15s; }
-        .btn-primary:hover { background:#6d28d9; }
-        .btn-sm { background:#1e1e2e; color:#94a3b8; border:1px solid #2d2d3d; padding:5px 12px; border-radius:6px; font-size:12px; transition:all 0.15s; }
-        .btn-sm:hover { background:#2d2d3d; color:#e2e8f0; }
-        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.8); display:flex; align-items:center; justify-content:center; z-index:100; padding:20px; }
-        .modal { background:#13131f; border:1px solid #2d2d3d; border-radius:16px; padding:24px; width:100%; max-width:480px; max-height:80vh; overflow-y:auto; }
-        .tag-label { font-size:11px; color:#64748b; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px; display:block; }
-        .ad-card { background:#0f0f1a; border:1px solid #1e1e2e; border-radius:10px; padding:12px; cursor:pointer; transition:all 0.15s; }
-        .ad-card:hover { border-color:#7c3aed44; background:#13131f; }
-        .metric-card { background:#0f0f1a; border:1px solid #1e1e2e; border-radius:12px; padding:16px; }
-        .stale { color:#ef4444 !important; }
-        select option { background:#13131f; }
-      `}</style>
 
       {/* Header */}
       <div style={{ borderBottom:"1px solid #1e1e2e", padding:"0 24px", display:"flex", alignItems:"center", justifyContent:"space-between", height:56 }}>
@@ -383,11 +357,11 @@ function AdCard({ ad, onClick }) {
 function PipelineView({ ads, onSelectAd, onMove }) {
   return (
     <div>
-      <div style={{ display:"flex", gap:12, overflowX:"auto", paddingBottom:8 }}>
+      <div className="pipeline-container">
         {STAGES.map(stage=>{
           const stageAds = ads.filter(a=>a.stage===stage).sort((a,b)=>PRIORITIES.indexOf(a.priority)-PRIORITIES.indexOf(b.priority));
           return (
-            <div key={stage} style={{ minWidth:220, flex:"0 0 220px" }}>
+            <div key={stage} className="pipeline-stage">
               <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:12 }}>
                 <div style={{ width:8, height:8, borderRadius:"50%", background:stageColor[stage] }} />
                 <span style={{ fontSize:13, fontWeight:500, color:"#94a3b8" }}>{stage}</span>
@@ -395,7 +369,7 @@ function PipelineView({ ads, onSelectAd, onMove }) {
               </div>
               <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
                 {stageAds.map(ad=><AdCard key={ad.id} ad={ad} onClick={()=>onSelectAd(ad)} />)}
-                {stageAds.length===0 && <div style={{ fontSize:12, color:"#2d2d3d", textAlign:"center", padding:"20px 0", border:"1px dashed #1e1e2e", borderRadius:8 }}>Empty</div>}
+                {stageAds.length===0 && <div className="empty-stage-placeholder">Empty</div>}
               </div>
             </div>
           );
